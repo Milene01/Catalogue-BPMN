@@ -1,7 +1,7 @@
-# Catálogo para revisão sistemática
+# Catálogo para revisão sistemática das extensões de BPMN
 
 Foi desenvolvido para armazenar resultados de revisão sistemática da literatura, para posterior apresentação e análise de resultados.
-Está sendo utilizado em: http://istarextensions.cin.ufpe.br
+Está sendo utilizado em: 
 
 # Usando docker
 

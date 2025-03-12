@@ -1,0 +1,29 @@
+volumes:
+    db-data:
+services:
+  db:
+    image: mariadb:10.4
+    ports: 
+    - "3306:3306"
+    environment: 
+        MYSQL_ROOT_PASSWORD: mrrt
+        MYSQL_DATABASE: mrrt
+        MYSQL_USER: mrrt
+        MYSQL_PASSWORD: mrrt     
+
+  web:   
+    env_file:
+      - .env
+    build:
+      context: '.'
+      dockerfile: ./.docker/Dockerfile
+      args:
+        uid: ${UID}          
+    environment:
+      - TZ=America/Sao_Paulo    
+    ports:
+    - "8000:80"
+    volumes:
+    - ./:/var/www/html
+    links:
+    - db

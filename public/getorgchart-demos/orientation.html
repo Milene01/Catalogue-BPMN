@@ -1,0 +1,61 @@
+﻿<html> 
+<head> 
+    <title>orientation</title>	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>	
+		<script src="../getorgchart/getorgchart.js"></script>
+	<link href="../getorgchart/getorgchart.css" rel="stylesheet" />
+	 
+</head> 
+<body>	 
+    <style type="text/css">
+        html, body {margin: 0px; padding: 0px;width: 100%;height: 100%;overflow: hidden; }
+		#people, .content {width: 100%; height: 100%;}
+		#toolbar {font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,"sans-serif"; color: #444444;font-size: 12px; width: 100%; background-color: #F3F3F3; height: 100%; 	}
+		.title {font-size: 20px; padding: 20px 0 0 10px;}
+		#toolbar a{color: #AC193D; display: block; margin: 10px 0 5px 20px; text-decoration: none; }
+		.field {padding: 10px 0 3px 20px;}
+    </style>
+	<table class="content" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td>			
+				<div id="people"></div> 
+			</td>			
+			<td style="width: 350px;">			
+				<div id="toolbar">
+					<div class="title">Orientation options</div>	
+					<div class="field"><input checked type="radio" class="radio" name="orientation" id="ROTOP" value="0" /><label for="ROTOP">getOrgChart.RO_TOP</label></div>
+					<div class="field"><input type="radio" class="radio" name="orientation" id="ROBOTTOM" value="1" /><label for="ROBOTTOM">getOrgChart.RO_BOTTOM</label></div>
+					<div class="field"><input type="radio" class="radio" name="orientation" id="RORIGHT" value="2" /><label for="RORIGHT">getOrgChart.RO_RIGHT</label></div>
+					<div class="field"><input type="radio" class="radio" name="orientation" id="ROLEFT" value="3" /><label for="ROLEFT">getOrgChart.RO_LEFT</label></div>
+					<div class="field"><input type="radio" class="radio" name="orientation" id="ROTOPPARENTLEFT" value="4" /><label for="ROTOPPARENTLEFT">getOrgChart.RO_TOP_PARENT_LEFT</label></div>
+					<div class="field"><input type="radio" class="radio" name="orientation" id="ROBOTTOMPARENTLEFT" value="5" /><label for="ROBOTTOMPARENTLEFT">getOrgChart.RO_BOTTOM_PARENT_LEFT</label></div>
+					<div class="field"><input type="radio" class="radio" name="orientation" id="RORIGHTPARENTTOP" value="6" /><label for="RORIGHTPARENTTOP">getOrgChart.RO_RIGHT_PARENT_TOP</label></div>
+					<div class="field"><input type="radio" class="radio" name="orientation" id="ROLEFTPARENTTOP" value="7" /><label for="ROLEFTPARENTTOP">getOrgChart.RO_LEFT_PARENT_TOP</label></div>	
+				</div>				
+			</td>
+		</tr>
+	</table>
+	
+	 
+    <script type="text/ecmascript">
+			function redrawChart (){
+				$("#people").getOrgChart({	
+					scale: 1,
+					primaryColumns: ["name", "title", "phone", "mail"],
+					imageColumn: "image",
+					orientation: parseInt($("input[name=orientation]:checked").val()),
+					dataSource: [ 
+						{ id: 1, parentId: "", name: "Mary D. Barnes", title: "Founder", phone: "765-386-5597", image: "images/f-57.jpg" },
+						{ id: 2, parentId: 1, name: "Larry B. Welborn", title: "Podiatrist", phone: "516-922-7920", image: "images/f-56.jpg" },
+						{ id: 3, parentId: 1, name: "John D. Blakely", title: "Ballet master", phone: "617-361-4327", mail: "john.blakely@dom.com" },
+						{ id: 4, parentId: 1, name: "Megan F. Borg", title: "Botanist", phone: "205-324-9284", image: "images/f-54.jpg" }
+					]
+				});
+			}
+
+			redrawChart();
+
+			$("input[name=orientation]").on("click", redrawChart);
+    </script>	
+</body>
+</html>

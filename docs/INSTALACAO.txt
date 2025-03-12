@@ -1,0 +1,137 @@
+#Manual de instalação
+
+#Mrrt
+
+#Recomendados:
+
+#- Debian 8+
+#- PHP 5.5+
+#- MySQL 5.5+
+
+# Você precisa conhecer:
+
+# Laravel
+# PHP
+# MySQL
+# Linux Básico
+# HTML, CSS e Javascript
+# Boostrap front-end framework
+# conta de desenvolvedor no Facebook, Google, Github (necessário para a autenticação)
+
+
+#Os passwords de todos os usuários é "mint"
+
+#Em produção você deve rodar com Apache2.2+ ou Ngynx, para isso siga as instruções de instalação do próprio Laravel 5.3
+
+#A instalação abaixo foi realizada em ambiente de desenvolvimento (máquina virtual), os pacotes do PHP podem ser os do PHP5 sem problemas
+
+#INSTALANDO OS PACOTES NECESSÀRIOS
+mint@mint ~ $ sudo apt-get install vim php7.0 php7.0-cli php7.0 curl php7.0-gd php7.0-intl php7.0-json php7.0-mcrypt php7.0-mysql git mysql-server mysql-client unzip php7.0-curl php7.0-mbstring php7.0-xml
+
+#RODE esse comando somente em ambiente de desenvolvimento
+mint@mint ~ $ sudo apt-get install mysql-workbench sublime-text 
+
+
+#Para instalar o composer siga as instruções de https://getcomposer.org/download/ === prefira a instalação no diretório /usr/bin para ficar disponível no terminal
+
+#Clone o projeto (na máquina virtual está na pasta Documents do usuário mint)
+git clone http://gitlab.videira.ifc.edu.br/tiago.heineck/mrrt.git
+
+# Na pasta do projeto rode o seguinte comando
+composer.phar install
+
+# atenção pode ser que alguns erros de extensão ocorram, verifique quais são as extensões necessárias, instale e rode novamente o comando anterior
+
+
+#configurando a aplicação
+mint@mint ~/Documents/mrrt $ mv .env.example .env
+mint@mint ~/Documents/mrrt $ vim .env
+
+# No arquivo você deve configurar o banco como o exemplo abaixo
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=mrrt
+DB_USERNAME=root
+DB_PASSWORD=mint
+
+#no caso de Enyo a diretiva deve ser 
+CATALOG_PRESENTATION=tree
+
+#configure uma conta de e-mail para envio por smtp, isso vai fazer as sugestões serem enviadas
+MAIL_DRIVER=smtp
+MAIL_HOST=mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+
+
+#as configurações abaixo são as chaves dos logins das redes sociais, note que onde tem localhost:8000 você deve substituir pela url do site em produção
+GITHUB_ID=GITHUB_ID
+GITHUB_SECRET=GITHUB_SECRET
+GITHUB_CALLBACK=http://localhost:8000/auth/github/callback
+
+FACEBOOK_ID=FACEBOK_ID
+FACEBOOK_SECRET=FACEBOOK_SECRET
+FACEBOOK_CALLBACK=http://localhost:8000/auth/facebook/callback
+
+GOOGLE_ID=GOOGLE_ID
+GOOGLE_SECRET=GOOGLE_SECRET
+GOOGLE_CALLBACK=http://localhost:8000/auth/google/callback
+
+
+#configure as chaves para funcionar o Captcha
+GOOGLE_RECAPTCHA_SITE_KEY=putHere
+GOOGLE_RECAPTCHA_SECRET_KEY=putHere
+
+# configure um nome para ser exibido na barra de topo
+SITENAME="My Catalog Manager"
+
+# a opção abaixo é 1 somente para Enyo
+CONSTRUCT_LIST=1
+
+#É o nome do link para a lista de publicação, no caso de Enyo é EXTENSION
+PUBLICATION_LIST_NAME=Publications
+
+
+#a autenticação funciona com o plugin https://github.com/laravel/socialite
+## no arquivo .env você deve colocar as chaves nos lugares corretos
+### o primeiro login criará um usuário com perfil user, você deve mudar na tabela users do banco o perfil para admin
+
+
+# Aplicando o banco de dados, rode os comandos abaixo na pasta onde está o sql (docs)
+mint@mint ~ $ mysql -uroot -p
+source install.sql
+
+
+#atualize o key
+mint@mint ~/Documents/mrrt $ php artisan key:generate
+
+
+#para executar use o comando e acessa a url indicada no navegador
+php artisan serve
+
+
+# PARA CONFIGURAR EM PRODUÇÂO você pode usar as configurações abaixo:
+
+Configurando apache (recomendamos altamente que seja feito com SSL)
+vim /etc/apache2/sites-available/000-default.conf
+Troque
+
+DocumentRoot /var/www/html
+Por
+
+   DocumentRoot /var/www/mrrt/public
+   <Directory "/var/www/mrrt/public">
+      AllowOverride all
+      Order Allow,deny
+      Allow from all
+   </Directory>
+Habilite o rewrite e Reinicie o Apache
+
+a2enmod rewrite
+service apache2 restart
+Permisssões de pasta
+chown www-data:www-data -R storage
+chown www-data:www-data -R public/pdf

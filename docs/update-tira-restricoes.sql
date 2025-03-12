@@ -1,0 +1,30 @@
+-- MySQL Workbench Synchronization
+-- Generated: 2016-07-19 13:07
+-- Model: New Model
+-- Version: 1.0
+-- Project: Name of the project
+-- Author: Tiago Heineck
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+ALTER TABLE `mrrt`.`publications` 
+CHANGE COLUMN `year` `year` INT(11) NULL DEFAULT NULL ,
+CHANGE COLUMN `journal` `journal` VARCHAR(255) NULL DEFAULT NULL ,
+CHANGE COLUMN `authors` `authors` VARCHAR(255) NULL DEFAULT NULL ,
+CHANGE COLUMN `user_id` `user_id` INT(11) NULL DEFAULT NULL ;
+
+ALTER TABLE `mrrt`.`publications` 
+DROP FOREIGN KEY `fk_publications_users`;
+
+ALTER TABLE `mrrt`.`publications` ADD CONSTRAINT `fk_publications_users`
+  FOREIGN KEY (`user_id`)
+  REFERENCES `mrrt`.`users` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

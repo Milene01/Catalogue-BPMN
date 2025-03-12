@@ -1,0 +1,33 @@
+﻿ <!DOCTYPE html>
+<html> 
+<head>  
+    <title>initialize-on-the-client</title>	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>	
+	  	
+	<script src="../getorgchart/getorgchart.js"></script> 
+	<link href="../getorgchart/getorgchart.css" rel="stylesheet" />
+	 
+    <style type="text/css">
+        html, body {margin: 0px; padding: 0px;width: 100%;height: 100%;overflow: hidden; }
+        #people {width: 100%;height: 100%; }   
+    </style>
+</head>
+<body>   
+    <div id="people"></div>
+    <script type="text/ecmascript">
+			$('#people').getOrgChart({
+				theme: "vivian",
+				primaryColumns: ["name", "title", "phone", "mail", "postcode"],
+				imageColumn: "image",
+				gridView: true,
+				dataSource:[			
+					{ id: 1, parentId: null, name: "Elizabeth Horton", title: "Founder", phone: "(03) 9252 4642" , image: "images/f-46.jpg", mail:"elizabeth.horton@live.com", postcode: "PH2 2SR" },
+					{ id: 2, parentId: 1, name: "Emily Horton", title: "Fork lift operator", phone: "(08) 9015 4407", image: "images/f-45.jpg", mail:"emily.horton@live.com", postcode: "BA5 0AP"  },
+					{ id: 3, parentId: 1, name: "Robert Nolan", title: "Blockmason", phone: "(02) 6747 7998", image: "images/f-41.jpg", mail:"robert.nolan@live.com", postcode: "BH9 4NG"  },
+					{ id: 4, parentId: 1, name: "Callum Anderson", title: "System operator", phone: "(03) 5314 0473", image: "images/f-43.jpg", mail:"callum.anderson@live.com", postcode: "HR6 8ZF"  },
+					{ id: 5, parentId: 4, name: "Courtney John", title: "System operator", phone: "(03) 5314 0473", image: "images/f-42.jpg", mail:"courtney.john@live.com", postcode: "OL4 6WF"  }
+				]
+			});
+    </script>	
+</body>
+</html>

@@ -1,0 +1,58 @@
+﻿ <!DOCTYPE html>
+<html> 
+<head>  
+    <title>initialize-on-the-client</title>	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>	
+	  	
+	<script src="../getorgchart/getorgchart.js"></script> 
+	<link href="../getorgchart/getorgchart.css" rel="stylesheet" />
+	 
+    <style type="text/css">
+        html, body {margin: 0px; padding: 0px;width: 100%;height: 100%;overflow: hidden; }
+        #people {width: 100%;height: 100%; }   
+
+		.link{ 
+		  marker-end: url(#markerArrow);
+		}
+		.get-link-label-rect{
+			fill: #9EBA53;
+            stroke-width: 1px;
+			stroke: #596c26;
+		}
+		.get-link-label{
+			fill: #ffffff;
+		}
+    </style>
+</head>
+<body>   
+    <div id="people"></div>
+    <script type="text/javascript">
+		var markerArrow = '<marker id="markerArrow" markerWidth="12" markerHeight="12" refX="12" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 L0,0" style="fill: #000000;" /> </marker>';
+
+		$("#people").getOrgChart({		
+			primaryColumns: ["Name"],
+			//orientation: getOrgChart.RO_TOP, 
+			orientation: getOrgChart.RO_BOTTOM, 
+			//orientation: getOrgChart.RO_RIGHT, 
+			//orientation: getOrgChart.RO_LEFT, 
+			//orientation: getOrgChart.RO_TOP_PARENT_LEFT,
+			//orientation: getOrgChart.RO_BOTTOM_PARENT_LEFT, 
+			//orientation: getOrgChart.RO_RIGHT_PARENT_TOP, 
+			//orientation: getOrgChart.RO_LEFT_PARENT_TOP, 
+			embededDefinitions: markerArrow,
+			dataSource: [
+				{ id: 1, parentId: null, Name: "Mr. E"},
+				{ id: 2, parentId: 1, Name: "Mr. B"},
+				{ id: 3, parentId: 1, Name: "Mr. C"},
+				{ id: 4, parentId: 1, Name: "Mr. D"},
+				{ id: 5, parentId: 3, Name: "Mr. A"}],
+			linkLabels: [
+				{id: 2, text: "Lorem ipsum dolor"},
+				{id: 3, text: "Donec sagittis turpis"},
+				{id: 4, text: "Nunc id tortor"},
+				{id: 5, text: "Nulla aliquam"}
+			]
+		});
+    </script>	
+</body>
+</html>

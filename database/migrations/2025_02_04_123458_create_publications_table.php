@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 
 class CreatePublicationsTable extends Migration {
@@ -30,6 +31,9 @@ class CreatePublicationsTable extends Migration {
 			$table->enum('type', array('Book Chapter','Journal','Conference'))->nullable();
 			$table->string('short_title', 100)->nullable();
 		});
+		Artisan::call('db:seed', [
+			'--class' => 'PublicationSeeder'
+		]);
 	}
 
 

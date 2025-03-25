@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
 
 class CreateClassificationsTable extends Migration {
 
@@ -17,6 +19,10 @@ class CreateClassificationsTable extends Migration {
 			$table->integer('id', true);
 			$table->string('description', 400);
 		});
+
+		Artisan::call('db:seed', [
+			'--class' => 'ClassificationSeeder'
+		]);
 	}
 
 

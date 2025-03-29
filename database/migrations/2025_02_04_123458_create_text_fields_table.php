@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
 
 class CreateTextFieldsTable extends Migration {
 
@@ -20,6 +22,9 @@ class CreateTextFieldsTable extends Migration {
 			$table->integer('category_id')->index('fk_extra_fields_categories1_idx');
 			$table->integer('images_id')->nullable()->index('fk_text_fields_images1_idx');
 		});
+		Artisan::call('db:seed', [
+			'--class' => 'Text_fieldSeeder'
+		]);
 	}
 
 

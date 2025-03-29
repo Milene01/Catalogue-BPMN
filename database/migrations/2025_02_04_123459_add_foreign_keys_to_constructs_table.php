@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
 
 class AddForeignKeysToConstructsTable extends Migration {
 
@@ -16,6 +18,10 @@ class AddForeignKeysToConstructsTable extends Migration {
 		{
 			$table->foreign('publications_id', 'fk_constructs_publications1')->references('id')->on('publications')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
+
+		Artisan::call('db:seed', [
+			'--class' => 'ConstructSeeder'
+		]);
 	}
 
 

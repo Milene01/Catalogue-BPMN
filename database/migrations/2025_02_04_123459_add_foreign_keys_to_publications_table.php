@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
 
 class AddForeignKeysToPublicationsTable extends Migration {
 
@@ -17,6 +19,10 @@ class AddForeignKeysToPublicationsTable extends Migration {
 			$table->foreign('user_id', 'fk_publications_users')->references('id')->on('users')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('publications_id', 'fk_publications_publications1')->references('id')->on('publications')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
+
+		Artisan::call('db:seed', [
+			'--class' => 'PublicationSeeder'
+		]);
 	}
 
 

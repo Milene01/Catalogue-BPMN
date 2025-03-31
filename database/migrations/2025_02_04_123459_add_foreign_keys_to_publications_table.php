@@ -19,10 +19,6 @@ class AddForeignKeysToPublicationsTable extends Migration {
 			$table->foreign('user_id', 'fk_publications_users')->references('id')->on('users')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('publications_id', 'fk_publications_publications1')->references('id')->on('publications')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
-
-		Artisan::call('db:seed', [
-			'--class' => 'PublicationSeeder'
-		]);
 	}
 
 

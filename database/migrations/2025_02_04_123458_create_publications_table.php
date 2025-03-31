@@ -32,7 +32,7 @@ class CreatePublicationsTable extends Migration {
 			$table->string('short_title', 100)->nullable();
 		});
 		Artisan::call('db:seed', [
-			'--class' => 'PublicationSeeder'
+			'--class' => PublicationSeeder::class
 		]);
 	}
 

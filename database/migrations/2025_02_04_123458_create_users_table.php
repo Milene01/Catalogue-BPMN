@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration {
 			$table->string('avatar');
 			$table->string('email')->nullable()->unique('email_UNIQUE');
 			$table->enum('rule', array('user','team','admin'))->default('user');
-			$table->string('remember_token');
+			$table->string('remember_token')->nullable();
 			$table->timestamps();
 			$table->string('affiliation')->nullable();
 			$table->string('personal_url')->nullable();

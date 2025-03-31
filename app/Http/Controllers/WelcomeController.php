@@ -91,44 +91,62 @@ class WelcomeController extends Controller
 
     public function constructs(Request $request)
     {
-            $roots = DB::table('constructs')
-                ->join('publications','constructs.publications_id','=','publications.id')
-                ->leftJoin('publications_tags','constructs.publications_id','=','publications_tags.publication_id')
-                ->leftJoin('tags','publications_tags.tag_id','=','tags.id')
-                ->select('constructs.*',DB::raw("group_concat(tags.name SEPARATOR ', ') as tag_name"))
-                ->where('publications.approved','=',true)
-                ->groupBy('constructs.id')
-                ->orderBy('tag_name')
-                ->orderBy('priorization','desc');
-            $concept = $request->input('c');
-            $applicationArea = $request->input('a');
-            $form = $request->input('f');
-            $type = $request->input('t');
-            $classification = $request->input('cl');
-            if($concept) $roots->where('constructs.concept','like',"%$concept%");
-            if($applicationArea) $roots->where('tags.id','=',$applicationArea);
-            if($form) $roots->where('constructs.form','=',$form);
-            if($type) $roots->where('constructs.type','=',$type);         
-            if($classification) {
-                $list = DB::table('constructs_representation_forms')->select('constructs_id')->where('representation_forms_id','=',$classification)->get();
-                $ar = [];
-                foreach ($list as $l){
-                    $ar[] = $l->constructs_id;
-                }
-                $roots->whereIn('constructs.id',$ar);
+        // Recupera as áreas de aplicação (em tags) com category_id = 3
+        $tags = DB::table('constructs')
+            ->join('text_fields', 'text_fields.publication_id', '=', 'constructs.publications_id')
+            ->where('text_fields.category_id', 3)
+            ->whereNotNull('text_fields.content') // Garantir que o conteúdo não seja NULL
+            ->where('text_fields.content', '!=', '') // Garantir que o conteúdo não seja uma string vazia
+            ->groupBy('text_fields.content') // Garante que os resultados não sejam duplicados    
+            ->get(); 
+        // dd($tags);
+        $roots = DB::table('constructs')
+            ->join('publications', 'constructs.publications_id', '=', 'publications.id')
+            ->join('text_fields','constructs.publications_id','=', 'text_fields.publication_id')
+            ->leftJoin('publications_tags', 'constructs.publications_id', '=', 'publications_tags.publication_id')
+            ->leftJoin('tags', 'publications_tags.tag_id', '=', 'tags.id')
+            ->select('constructs.*', DB::raw("group_concat(tags.name SEPARATOR ', ') as tag_name"))
+            ->where('publications.approved', '=', true)
+            ->groupBy('constructs.id')
+            ->orderBy('tag_name')
+            ->orderBy('priorization', 'desc');
+
+        // Recupera os filtros da requisição
+        $concept = $request->input('c');
+        $applicationArea = $request->input('a'); // Área de aplicação (filtro)
+        $form = $request->input('f');
+        $type = $request->input('t');
+        $classification = $request->input('cl');
+
+        // Aplica os filtros
+        if ($concept) $roots->where('constructs.concept', 'like', "%$concept%");
+        // if ($applicationArea) $roots->where('tags.id', '=', $applicationArea);
+        if ($applicationArea) $roots->where('text_fields.content', '=', $applicationArea);
+        if ($form) $roots->where('constructs.form', '=', $form);
+        if ($type) $roots->where('constructs.type', '=', $type);
+        if ($classification) {
+            $list = DB::table('constructs_representation_forms')->select('constructs_id')->where('representation_forms_id', '=', $classification)->get();
+            $ar = [];
+            foreach ($list as $l) {
+                $ar[] = $l->constructs_id;
             }
-            return view('angularapp.constructs',[
-                'constructs' => $roots->paginate(20),
-                'tags'=>Tag::where('category_id','=',18)->orderBy('name')->get(),
-                'forms'=>Construct::select('form')->groupBy('form')->get(),
-                'classifications'=>Classification::all(),
-                'types' => ['entity','relantioship'],
-                'form'=>$form,
-                'type'=>$type,
-                'concept'=>$concept,
-                'classification'=>$classification,
-                'applicationArea'=>$applicationArea
-            ]);
+            $roots->whereIn('constructs.id', $ar);
+        }
+        //return response()->json($roots->get());
+
+        // Retorna a view com os dados necessários
+        return view('angularapp.constructs', [
+            'constructs' => $roots->paginate(20),
+            'tags' => $tags, // Passa as áreas de aplicação (tags) para o select
+            'forms' => Construct::select('form')->groupBy('form')->get(),
+            'classifications' => Classification::all(),
+            'types' => ['entity', 'relantioship'],
+            'form' => $form,
+            'type' => $type,
+            'concept' => $concept,
+            'classification' => $classification,
+            'applicationArea' => $applicationArea // Passa o filtro selecionado
+        ]);
     }
 
     public function conflicts(Request $request)

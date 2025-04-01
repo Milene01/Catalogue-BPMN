@@ -28,7 +28,7 @@
                     <option value="{{$t}}" @if($t == old('t', $type)) selected="selected" @endif>{{$t}}</option>
                 @endforeach
             </select>
-            <select name="cl" class="form-control">
+            <!-- <select name="cl" class="form-control">
                 <option value="0">-- Filter By Classification --</option>
                 @foreach($classifications as $c)
                     <optgroup label="{{$c->description}}">
@@ -37,7 +37,7 @@
                         @endforeach
                     </optgroup>
                 @endforeach
-            </select>
+            </select> -->
             <button type="submit" class="btn btn-success">Search</button>
             <a href="{{ url('construct/list') }}" class="btn btn-warning">Clear</a>
         </div>

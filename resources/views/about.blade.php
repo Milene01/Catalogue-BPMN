@@ -9,7 +9,7 @@
     </div>
     <div class="panel-body">
         <h3> BPMN Extension Catalog </h3>
-        <h4> Last update: February 2025 </h4> 
+        <h4> Last update: March 2025 </h4> 
         <p>
             This catalog manager was developed based on a systematic review of the literature on BPMN extensions, providing a structured and comprehensive repository of existing adaptations and enhancements to the BPMN framework.
         </p>

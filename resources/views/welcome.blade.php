@@ -4,7 +4,7 @@
 <div class="container">
             <div class="col-md-9">
             <h3>{{env('PUBLICATION_LIST_NAME')}} List </h3>
-                <h5>Search by Author, Title or Filter by Categories</h5>
+                <h5>Search by Author or Title</h5>
                 </div>
             <!--<div class="col-md-3">
                 <br>
@@ -12,8 +12,9 @@
             </div>-->
             <form action="{{ url('/publication/list') }}" method="get" class="form-inline">
                 <div class="form-group">
-                    <input type="search" name="q" class="form-control" placeholder="Author or Title Search" value="{{$query}}"> and/or
-                    <select name="f" class="form-control">
+                    <input type="search" name="q" class="form-control" placeholder="Author or Title Search" value="{{$query}}">
+                    <span style="display:inline-block; width: 4ch;"></span> <!-- simula espaço -->
+                    <!--<select name="f" class="form-control">
                         <option value="0">Filter By</option>
                         @foreach($categories as $c)
                             <optgroup label="{{ $c->name }}">
@@ -22,7 +23,7 @@
                                 @endforeach
                             </optgroup>
                         @endforeach
-                    </select>
+                    </select>-->
                     <button type="submit" class="btn btn-success">Search</button>
                 </div>
             </form>
